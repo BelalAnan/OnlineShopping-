@@ -1,0 +1,82 @@
+﻿
+@model Movie
+
+@{
+    ViewData["Title"] = "Movie Details";
+    Layout = "~/Views/Shared/_SideLayout.cshtml";
+}
+
+
+
+
+<div>
+    <h2>@Model.Title</h2>
+    <hr />
+    <div>
+        @foreach (var item in Model.Genres)
+        {
+            <h4><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="@item.Id">@item.Name</a></h4>
+        }
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            <img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}")" alt="@Model.Title image" class="trailer-img" width="230" height="300" style="margin-top:0" />
+            @*<video src="@($"https://image.tmdb.org/t/p/original{Model.Videos.Results[0]}")" controls></video>*@
+        </dt>
+        <dd class="col-sm-9">
+            <h4>
+                @Html.DisplayFor(model => model.Tagline)
+            </h4>
+        </dd>
+        <dt class="col-sm-3 text-danger">
+            @Html.DisplayNameFor(model => model.Overview)
+        </dt>
+        <dd class="col-sm-9">
+            <article>
+                @Model.Overview
+            </article>
+        </dd>
+        <dt class="col-sm-3 text-danger">
+            @Html.DisplayNameFor(model => model.OriginalTitle)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.OriginalTitle)
+        </dd>
+        <dt class="col-sm-3 text-danger">
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.ReleaseDate.Value.ToString("dd MMMM yyyy")
+            @*<a class="btn" href="https://www.imdb.com/title/@Model.ImdbId/?ref_=nv_sr_srsg_0">IMDB</a>*@
+        </dd>
+        <dd class="col-sm-9">
+            <p>
+                <a href="https://www.imdb.com/title/@Model.ImdbId/?ref_=nv_sr_srsg_0" class="imdb-logo">
+                    IMDb  @if (Model.VoteAverage > 0)
+                    {@Model.VoteAverage;
+                }
+                </a>
+            </p>
+        </dd>
+    </dl>
+
+    @*<partial name="_MovieItemSlider" model="@ViewBag.recommendedMovies" />*@
+
+    <p class="button">
+        <a class="btn btn-primary" asp-controller="Orders" asp-action="AddToShoppingCart" asp-route-movieid="@Model.Id">Add To Cart</a>
+    </p>
+</div>
+
+<style>
+    .imdb-logo {
+        font: 2em/1 Impact, HelveticaNeue-CondensedBold, sans-serif;
+        text-shadow: 0 0 .15em #fff;
+        text-decoration: none;
+        display: inline-block;
+        vertical-align: bottom;
+        padding: .25em .35em;
+        border-radius: .15em;
+        background: radial-gradient(#ffffb8, #ce981d);
+    }
+</style>
